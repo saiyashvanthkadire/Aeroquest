@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroQuest Login & Sign Up</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(8, 20, 42, 0.62), rgba(8, 20, 42, 0.78)),
+        url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+      color: #ffffff;
+    }
+
+    .brand-mark {
+      position: fixed;
+      top: 24px;
+      left: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      text-decoration: none;
+      z-index: 2;
+    }
+
+    .brand-mark span {
+      font-size: 13px;
+      letter-spacing: 0.8px;
+      color: #dceeff;
+    }
+
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 58px;
+      height: 58px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .logo-text strong {
+      font-size: 24px;
+      color: #ffffff;
+      letter-spacing: 0.4px;
+    }
+
+    .logo-text span {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #ffdd00;
+      margin-top: 4px;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 40px;
+      padding: 100px 50px 50px;
+    }
+
+    .intro {
+      max-width: 560px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      margin-bottom: 18px;
+      letter-spacing: 1px;
+      font-size: 13px;
+    }
+
+    .intro h1 {
+      font-size: 56px;
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    .intro p {
+      font-size: 18px;
+      line-height: 1.7;
+      color: #e8eefc;
+      max-width: 500px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 430px;
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 28px;
+      padding: 34px 30px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.28);
+    }
+
+    .card h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #e9f1ff;
+      margin-bottom: 24px;
+    }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 6px;
+      margin-bottom: 24px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .tab-btn {
+      border: none;
+      border-radius: 13px;
+      padding: 12px 14px;
+      background: transparent;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #ffdd00, #ff9f1c);
+      color: #14213d;
+    }
+
+    .auth-panel {
+      display: none;
+    }
+
+    .auth-panel.active {
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .field input::placeholder {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+      font-size: 14px;
+    }
+
+    .options a,
+    .switch-link button {
+      color: #ffdd00;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .switch-link button {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: inherit;
+      font-family: inherit;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ffdd00, #ff9f1c);
+      color: #14213d;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(255, 190, 11, 0.35);
+    }
+
+    .switch-link {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        grid-template-columns: 1fr;
+        padding: 30px 20px 40px;
+      }
+
+      .intro h1 {
+        font-size: 40px;
+      }
+
+      .card {
+        margin: 0;
+      }
+
+      .brand-mark {
+        top: 18px;
+        left: 18px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 28px 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="brand-mark" href="homepage.html">
+    <div class="logo-mark" aria-label="AeroQuest Travels logo">
+      <svg class="logo-icon" viewBox="0 0 64 64" aria-hidden="true">
+        <defs>
+          <linearGradient id="aqLoginLogo" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4cc9f0"></stop>
+            <stop offset="100%" stop-color="#0d6efd"></stop>
+          </linearGradient>
+        </defs>
+        <circle cx="32" cy="32" r="30" fill="url(#aqLoginLogo)"></circle>
+        <path d="M32 14c-7.5 0-13.5 5.8-13.5 13.1 0 10.1 13.5 22.9 13.5 22.9S45.5 37.2 45.5 27.1C45.5 19.8 39.5 14 32 14zm0 17.6a4.8 4.8 0 1 1 0-9.6 4.8 4.8 0 0 1 0 9.6z" fill="#ffffff"></path>
+        <path d="M17 25l15.5 4.1 8.6-7.5c1.3-1.1 3.2.5 2.2 1.9l-6.5 8.9 3.7 13.6c.3 1.2-1.2 2-2 1.1l-7.1-8.1-8.8 2.1c-1.2.3-2-.9-1.2-1.8l5.4-6.3-9.2-5.5c-1.1-.7-.7-2.5.6-2.4z" fill="#ffd166"></path>
+      </svg>
+      <div class="logo-text">
+        <strong>AeroQuest</strong>
+        <span>Travels</span>
+      </div>
+    </div>
+  </a>
+
+  <main class="page">
+    <section class="intro">
+      <span class="tag">AEROQUEST MEMBER ACCESS</span>
+      <h1 id="intro-title">Step back into your next unforgettable journey.</h1>
+      <p id="intro-copy">Log in to manage bookings, save dream destinations, and keep every travel plan in one smooth place.</p>
+    </section>
+
+    <section class="card">
+      <div class="auth-tabs" aria-label="Choose login or signup form">
+        <button class="tab-btn active" type="button" data-panel="login">Log In</button>
+        <button class="tab-btn" type="button" data-panel="signup">Sign Up</button>
+      </div>
+
+      <div class="auth-panel active" id="login-panel">
+        <h2>Welcome back</h2>
+        <p>Enter your account details and continue your travel story.</p>
+        <form action="homepage.html" class="auth-form">
+          <div class="field">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="name@example.com" required>
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+          </div>
+
+          <div class="options">
+            <span>Remember me</span>
+            <a href="#">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn">Log In</button>
+        </form>
+        <p class="switch-link">New here? <button type="button" data-panel="signup">Create an account</button></p>
+      </div>
+
+      <div class="auth-panel" id="signup-panel">
+        <h2>Create account</h2>
+        <p>Join AeroQuest and start planning smarter, faster, and more beautifully.</p>
+        <form action="homepage.html" class="auth-form">
+          <div class="grid">
+            <div class="field">
+              <label for="first-name">First Name</label>
+              <input type="text" id="first-name" placeholder="First name" required>
+            </div>
+
+            <div class="field">
+              <label for="last-name">Last Name</label>
+              <input type="text" id="last-name" placeholder="Last name" required>
+            </div>
+
+            <div class="field full">
+              <label for="signup-email">Email Address</label>
+              <input type="email" id="signup-email" placeholder="name@example.com" required>
+            </div>
+
+            <div class="field">
+              <label for="signup-password">Password</label>
+              <input type="password" id="signup-password" placeholder="Create password" required>
+            </div>
+
+            <div class="field">
+              <label for="confirm-password">Confirm Password</label>
+              <input type="password" id="confirm-password" placeholder="Confirm password" required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn">Sign Up</button>
+        </form>
+        <p class="switch-link">Already have an account? <button type="button" data-panel="login">Log in</button></p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const tabButtons = document.querySelectorAll("[data-panel]");
+    const loginPanel = document.getElementById("login-panel");
+    const signupPanel = document.getElementById("signup-panel");
+    const introTitle = document.getElementById("intro-title");
+    const introCopy = document.getElementById("intro-copy");
+
+    function showPanel(panelName) {
+      const isSignup = panelName === "signup";
+
+      loginPanel.classList.toggle("active", !isSignup);
+      signupPanel.classList.toggle("active", isSignup);
+
+      document.querySelectorAll(".tab-btn").forEach((button) => {
+        button.classList.toggle("active", button.dataset.panel === panelName);
+      });
+
+      introTitle.textContent = isSignup
+        ? "Build your own travel world in one account."
+        : "Step back into your next unforgettable journey.";
+      introCopy.textContent = isSignup
+        ? "Sign up to track bookings, save favorite packages, and unlock a smoother experience from inspiration to departure."
+        : "Log in to manage bookings, save dream destinations, and keep every travel plan in one smooth place.";
+    }
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => showPanel(button.dataset.panel));
+    });
+
+    document.querySelectorAll(".auth-form").forEach((form) => {
+      form.addEventListener("submit", () => {
+        const emailInput = form.querySelector('input[type="email"]');
+
+        if (emailInput && emailInput.value.trim()) {
+          const email = emailInput.value.trim();
+          const firstName = form.querySelector("#first-name")?.value.trim();
+          const lastName = form.querySelector("#last-name")?.value.trim();
+          const displayName = [firstName, lastName].filter(Boolean).join(" ") || email.split("@")[0];
+
+          localStorage.setItem("aeroquestUserEmail", email);
+          localStorage.setItem("aeroquestUserName", displayName);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

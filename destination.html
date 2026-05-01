@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroQuest Destinations</title>
+  <style>
+    :root {
+      --navy: #081b33;
+      --blue: #0d6efd;
+      --gold: #ffd166;
+      --mist: #eef6ff;
+      --text: #f8fbff;
+      --dark: #10233b;
+      --muted: #607388;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(140deg, rgba(4, 16, 30, 0.42), rgba(10, 53, 94, 0.22)),
+        url("https://images.unsplash.com/photo-1503220317375-aaad61436b1b?auto=format&fit=crop&w=1600&q=80") center/cover fixed no-repeat;
+      color: var(--dark);
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      background: linear-gradient(180deg, rgba(245, 250, 255, 0.52), rgba(245, 250, 255, 0.74));
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 54px;
+      background: rgba(8, 27, 51, 0.46);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .brand-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-tag {
+      font-size: 14px;
+      color: #dceeff;
+      letter-spacing: 0.8px;
+    }
+
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .logo-text strong {
+      font-size: 28px;
+      color: #ffffff;
+      letter-spacing: 0.4px;
+    }
+
+    .logo-text span {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      margin-top: 4px;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--gold);
+    }
+
+    .user-initial {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 50%;
+      place-items: center;
+      background: linear-gradient(135deg, var(--gold), #ff9f1c);
+      color: #10233b;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+    }
+
+    .user-initial.show {
+      display: grid;
+    }
+
+    .user-menu {
+      position: relative;
+    }
+
+    .user-dropdown {
+      position: absolute;
+      top: 48px;
+      right: 0;
+      display: none;
+      min-width: 150px;
+      padding: 8px;
+      border-radius: 14px;
+      background: rgba(8, 27, 51, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+    }
+
+    .user-dropdown.show {
+      display: grid;
+      gap: 4px;
+    }
+
+    .user-dropdown button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .user-dropdown button:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--gold);
+    }
+
+    .settings-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      background: rgba(0, 0, 0, 0.34);
+      z-index: 30;
+    }
+
+    .settings-overlay.show {
+      display: block;
+    }
+
+    .settings-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(340px, 88vw);
+      height: 100vh;
+      padding: 28px;
+      overflow-y: auto;
+      transform: translateX(105%);
+      transition: transform 0.28s ease;
+      z-index: 31;
+      background: #081b33;
+      color: #fff;
+      box-shadow: -18px 0 44px rgba(0, 0, 0, 0.3);
+    }
+
+    .settings-panel.show {
+      transform: translateX(0);
+    }
+
+    .settings-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .settings-head h2 {
+      font-size: 26px;
+    }
+
+    .close-settings {
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .profile-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      margin-bottom: 24px;
+    }
+
+    .profile-card span {
+      display: block;
+      color: var(--gold);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .profile-card strong {
+      display: block;
+      font-size: 20px;
+      word-break: break-word;
+    }
+
+    .profile-card small {
+      display: block;
+      margin-top: 6px;
+      color: #cfe0f1;
+      word-break: break-word;
+    }
+
+    .settings-section {
+      margin-top: 22px;
+    }
+
+    .settings-section h3 {
+      margin-bottom: 12px;
+      font-size: 16px;
+      color: #ffd166;
+    }
+
+    .settings-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .settings-row span {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .settings-row small {
+      display: block;
+      margin-top: 3px;
+      color: #cfe0f1;
+      font-size: 12px;
+    }
+
+    .setting-switch {
+      width: 48px;
+      height: 26px;
+      border: none;
+      border-radius: 999px;
+      padding: 3px;
+      background: rgba(255, 255, 255, 0.22);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .setting-switch::before {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ffffff;
+      transition: transform 0.2s ease;
+    }
+
+    .setting-switch.active {
+      background: linear-gradient(135deg, #ffd166, #ff9f1c);
+    }
+
+    .setting-switch.active::before {
+      transform: translateX(22px);
+      background: #10233b;
+    }
+
+    .quick-actions {
+      display: grid;
+      gap: 10px;
+    }
+
+    .settings-link {
+      display: block;
+      padding: 13px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .settings-link:hover {
+      color: #10233b;
+      background: linear-gradient(135deg, #ffd166, #ff9f1c);
+    }
+
+
+    .hero {
+      padding: 70px 54px 30px;
+      color: #fff;
+    }
+
+    .hero-box {
+      max-width: 760px;
+      padding: 34px;
+      border-radius: 30px;
+      background: rgba(7, 24, 42, 0.42);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.22);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      margin-bottom: 18px;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 {
+      font-size: 58px;
+      line-height: 1.04;
+      margin-bottom: 14px;
+    }
+
+    .hero p {
+      max-width: 640px;
+      font-size: 18px;
+      color: #e5f1ff;
+    }
+
+    .destinations {
+      padding: 24px 54px 70px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .section-title h2 {
+      font-size: 42px;
+      color: #10233b;
+      margin-bottom: 10px;
+    }
+
+    .section-title p {
+      max-width: 680px;
+      margin: 0 auto;
+      color: var(--muted);
+    }
+
+    .destination-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .destination-card {
+      overflow: hidden;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid rgba(209, 225, 242, 0.95);
+      box-shadow: 0 22px 48px rgba(16, 35, 59, 0.1);
+      transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .destination-card:nth-child(2),
+    .destination-card:nth-child(5),
+    .destination-card:nth-child(8),
+    .destination-card:nth-child(11),
+    .destination-card:nth-child(14),
+    .destination-card:nth-child(17) {
+      animation-delay: 0.1s;
+    }
+
+    .destination-card:nth-child(3),
+    .destination-card:nth-child(6),
+    .destination-card:nth-child(9),
+    .destination-card:nth-child(12),
+    .destination-card:nth-child(15),
+    .destination-card:nth-child(18) {
+      animation-delay: 0.2s;
+    }
+
+    .destination-card:hover {
+      transform: translateY(-10px) scale(1.01);
+      box-shadow: 0 28px 55px rgba(16, 35, 59, 0.16);
+      border-color: #b7d5f3;
+    }
+
+    .card-image {
+      display: block;
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      transition: transform 0.45s ease;
+    }
+
+    .destination-card:hover .card-image {
+      transform: scale(1.08);
+    }
+
+    .card-content {
+      padding: 22px;
+    }
+
+    .card-tag {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      background: #eaf4ff;
+      color: #0d6efd;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.6px;
+    }
+
+    .card-content h3 {
+      font-size: 25px;
+      color: #10233b;
+      margin-bottom: 10px;
+    }
+
+    .card-content p {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 18px;
+      min-height: 72px;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), #ff9f1c);
+      color: #10233b;
+      font-weight: bold;
+      text-decoration: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(255, 170, 37, 0.22);
+    }
+
+    footer {
+      background: #081b33;
+      color: #dceeff;
+      padding: 28px 54px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(26px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .destination-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 860px) {
+      header {
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      nav {
+        justify-content: center;
+      }
+
+      .hero,
+      .destinations,
+      footer {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .hero h1,
+      .section-title h2 {
+        font-size: 36px;
+      }
+
+      .destination-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header>
+      <div class="brand-group">
+        <div class="logo-mark" aria-label="AeroQuest Travels logo">
+          <svg class="logo-icon" viewBox="0 0 64 64" aria-hidden="true">
+            <defs>
+              <linearGradient id="aqDestinationLogo" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4cc9f0"></stop>
+                <stop offset="100%" stop-color="#0d6efd"></stop>
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="30" fill="url(#aqDestinationLogo)"></circle>
+            <path d="M32 14c-7.5 0-13.5 5.8-13.5 13.1 0 10.1 13.5 22.9 13.5 22.9S45.5 37.2 45.5 27.1C45.5 19.8 39.5 14 32 14zm0 17.6a4.8 4.8 0 1 1 0-9.6 4.8 4.8 0 0 1 0 9.6z" fill="#ffffff"></path>
+            <path d="M17 25l15.5 4.1 8.6-7.5c1.3-1.1 3.2.5 2.2 1.9l-6.5 8.9 3.7 13.6c.3 1.2-1.2 2-2 1.1l-7.1-8.1-8.8 2.1c-1.2.3-2-.9-1.2-1.8l5.4-6.3-9.2-5.5c-1.1-.7-.7-2.5.6-2.4z" fill="#ffd166"></path>
+          </svg>
+          <div class="logo-text">
+            <strong>AeroQuest</strong>
+            <span>Travels</span>
+          </div>
+        </div>
+        <div class="brand-tag">Explore beyond the limits</div>
+      </div>
+      <nav>
+        <a href="homepage.html">Home</a>
+        <a href="destination.html" class="active">Destinations</a>
+        <a href="packages.html">Packages</a>
+        <a href="Bookingform.html">Booking</a>
+        <a href="contact.html">Contact</a>
+        <div class="user-menu">
+          <button class="user-initial" type="button" aria-label="Open account menu"></button>
+          <div class="user-dropdown">
+            <button type="button" class="settings-btn">Settings</button>
+            <button type="button" class="logout-btn">Logout</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="settings-overlay"></div>
+    <aside class="settings-panel" aria-label="Account settings">
+      <div class="settings-head">
+        <h2>Settings</h2>
+        <button class="close-settings" type="button" aria-label="Close settings">x</button>
+      </div>
+      <div class="profile-card">
+        <span>User</span>
+        <strong class="settings-user-name">Guest User</strong>
+        <small class="settings-user-email">Not signed in</small>
+      </div>
+      <div class="settings-section">
+        <h3>Travel Profile</h3>
+        <div class="settings-row">
+          <div>
+            <span>Member access</span>
+            <small>Bookings and saved plans stay connected</small>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div>
+            <span>Preferred package</span>
+            <small>Standard comfort</small>
+          </div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h3>Notifications</h3>
+        <div class="settings-row">
+          <div>
+            <span>Trip reminders</span>
+            <small>Booking dates and travel updates</small>
+          </div>
+          <button class="setting-switch active" type="button" aria-label="Toggle trip reminders"></button>
+        </div>
+        <div class="settings-row">
+          <div>
+            <span>Offer alerts</span>
+            <small>Package deals and seasonal escapes</small>
+          </div>
+          <button class="setting-switch" type="button" aria-label="Toggle offer alerts"></button>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h3>Quick Actions</h3>
+        <div class="quick-actions">
+          <a class="settings-link" href="Bookingform.html">Open Booking Form</a>
+          <a class="settings-link" href="contact.html">Contact Support</a>
+        </div>
+      </div>
+    </aside>
+
+    <section class="hero">
+      <div class="hero-box">
+        <span class="eyebrow">EXPLORE ICONIC JOURNEYS</span>
+        <h1>Destinations that turn every trip into a memory.</h1>
+        <p>
+          Browse handpicked escapes across cities, islands, mountains, and cultural wonders.
+          Every card is built to inspire your next adventure.
+        </p>
+      </div>
+    </section>
+
+    <section class="destinations">
+      <div class="section-title">
+        <h2>Favorite places around the world</h2>
+        <p>Discover beautiful places in a premium three-column gallery with smooth motion and a travel-inspired atmosphere.</p>
+      </div>
+
+      <div class="destination-grid">
+        <article class="destination-card">
+          <img class="card-image" src="https://i.natgeofe.com/k/c41b4f59-181c-4747-ad20-ef69987c8d59/eiffel-tower-night.jpg?wp=1&w=1084.125&h=1627.5" alt="Paris">
+          <div class="card-content">
+            <span class="card-tag">City Escape</span>
+            <h3>Paris</h3>
+            <p>The iconic Eiffel Tower, world-class museums, and charming cafe-lined streets create a timeless romantic journey.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy52Pwlhlzef1fZHMgR3mnWfbJ8IQ5jQ_9EQ&s" alt="Singapore">
+          <div class="card-content">
+            <span class="card-tag">Modern Asia</span>
+            <h3>Singapore</h3>
+            <p>Marina Bay lights, famous hawker food, and peaceful temples give Singapore a stylish East-meets-West energy.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR1D45iBVsNs0SCKLbS2NwDW_2elEzF74vsQ&s" alt="New York">
+          <div class="card-content">
+            <span class="card-tag">Urban Icon</span>
+            <h3>New York</h3>
+            <p>Bright Times Square, Central Park paths, and nonstop city energy make New York a classic big-city adventure.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT1PCiOgOw9Rj6g0CMAWwl5hKteMcUPl2Mxg&s" alt="Switzerland">
+          <div class="card-content">
+            <span class="card-tag">Mountain Dream</span>
+            <h3>Switzerland</h3>
+            <p>Snowy Alps, crystal lakes, and postcard-perfect villages make Switzerland one of the most scenic escapes on earth.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLY6cQKZ2SthHS7JcpefbecuG9Q_E8vaTfgw&s" alt="Santorini Greece">
+          <div class="card-content">
+            <span class="card-tag">Island Romance</span>
+            <h3>Santorini</h3>
+            <p>Whitewashed houses, blue domes, and sunset views over the Aegean Sea make this a dream destination for couples.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRoxridbYEXVA_34zVqKtMWJL77C9GbVsnaQ&s" alt="Kyoto Japan">
+          <div class="card-content">
+            <span class="card-tag">Cultural Wonder</span>
+            <h3>Kyoto</h3>
+            <p>Ancient temples, cherry blossoms, peaceful gardens, and traditional tea houses make Kyoto deeply unforgettable.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl3T42TIGCpCseoilsXwL_W5ra0WV81iBFFQ&s" alt="Bora Bora">
+          <div class="card-content">
+            <span class="card-tag">Luxury Lagoon</span>
+            <h3>Bora Bora</h3>
+            <p>Turquoise lagoons, coral reefs, and overwater villas create a luxury island experience that feels surreal.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf3JoubbsPdIiIyv1aV8ehDF9K0kzG0xR1Tw&s" alt="Banff National Park">
+          <div class="card-content">
+            <span class="card-tag">Nature Adventure</span>
+            <h3>Banff</h3>
+            <p>Glacial lakes, dramatic mountains, and rich wildlife make Banff National Park a pure outdoor masterpiece.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuM7v5zI5C7K17kdBFFjeYmzpz8Eg39MWLxg&s" alt="Machu Picchu Peru">
+          <div class="card-content">
+            <span class="card-tag">Ancient Wonder</span>
+            <h3>Machu Picchu</h3>
+            <p>High in the Andes, this legendary Incan city combines history, mystery, and breathtaking mountain views.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC2c7Q-ldvEyJluap7I3cg-ksG6f6WmGCNVg&s" alt="Amalfi Coast Italy">
+          <div class="card-content">
+            <span class="card-tag">Coastal Luxury</span>
+            <h3>Amalfi Coast</h3>
+            <p>Dramatic cliffs, colorful villages, and Mediterranean views make the Amalfi Coast a stylish seaside getaway.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhXeBYp1LHW54SIGoOIgSy4J5FnT9i5XsLMA&s" alt="Dubai UAE">
+          <div class="card-content">
+            <span class="card-tag">Luxury City</span>
+            <h3>Dubai</h3>
+            <p>Futuristic towers, luxury shopping, desert adventures, and glamorous resorts define Dubai's bold personality.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTd8VMBp1AITXiIPHUbGSfFLU_4VxGClsy7g&s" alt="Queenstown New Zealand">
+          <div class="card-content">
+            <span class="card-tag">Adventure Hub</span>
+            <h3>Queenstown</h3>
+            <p>Lakes, mountains, and thrilling outdoor activities make Queenstown a top choice for adventurous travelers.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKJFCNeNDOzJAeKTX-1vmMjIGiHY_gCXob2Q&s" alt="Cappadocia Turkey">
+          <div class="card-content">
+            <span class="card-tag">Skyline Magic</span>
+            <h3>Cappadocia</h3>
+            <p>Hot air balloons, cave hotels, and unusual rock formations make Cappadocia feel almost otherworldly.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmv5HOZqhBMiYoyoNQyAo9hegd413ygJpWrA&s" alt="Bali Indonesia">
+          <div class="card-content">
+            <span class="card-tag">Tropical Soul</span>
+            <h3>Bali</h3>
+            <p>Lush rice terraces, sacred temples, beach sunsets, and vibrant local culture give Bali timeless appeal.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrfVXvEPf2BbZEqzAa0EKKzrkvI-S7DStEdA&s" alt="Iceland Golden Circle">
+          <div class="card-content">
+            <span class="card-tag">Natural Wonder</span>
+            <h3>Iceland</h3>
+            <p>Waterfalls, geysers, glaciers, and the Northern Lights turn Iceland into a dramatic nature-filled adventure.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlMCYhwfkih3aSc5WEiCnNuCDXOQlxT5QwLA&s" alt="Petra Jordan">
+          <div class="card-content">
+            <span class="card-tag">Historic Treasure</span>
+            <h3>Petra</h3>
+            <p>This rose-red archaeological wonder carved into cliffs is one of the most extraordinary historical sites in the world.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrCCfikm_qWl0IRxrP7aQ1D1ZQUdaYvH2OFg&s" alt="Swiss Alps">
+          <div class="card-content">
+            <span class="card-tag">Alpine Escape</span>
+            <h3>Swiss Alps</h3>
+            <p>Scenic trains, charming ski villages, and grand snowy peaks make the Swiss Alps effortlessly cinematic.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTEfQF8HJPZ1vrkoPZJTcEQVFRvHbuJzFjVg&s" alt="Serengeti Tanzania">
+          <div class="card-content">
+            <span class="card-tag">Wild Safari</span>
+            <h3>Serengeti</h3>
+            <p>Legendary wildlife migrations, sweeping plains, and unforgettable safari moments make this a bucket-list journey.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80" alt="Maldives">
+          <div class="card-content">
+            <span class="card-tag">Ocean Bliss</span>
+            <h3>Maldives</h3>
+            <p>Crystal-clear lagoons, overwater villas, and calm turquoise waters make the Maldives a dreamy luxury retreat.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80" alt="Rome Italy">
+          <div class="card-content">
+            <span class="card-tag">Historic Europe</span>
+            <h3>Rome</h3>
+            <p>Ancient ruins, lively piazzas, and legendary Italian food make Rome a timeless cultural escape.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?auto=format&fit=crop&w=1200&q=80" alt="Sydney Australia">
+          <div class="card-content">
+            <span class="card-tag">Harbor City</span>
+            <h3>Sydney</h3>
+            <p>Golden beaches, the Opera House, and a sparkling harbor give Sydney an energetic coastal charm.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=80" alt="Barcelona Spain">
+          <div class="card-content">
+            <span class="card-tag">Art And Coast</span>
+            <h3>Barcelona</h3>
+            <p>Gaudi architecture, beachside walks, and lively streets make Barcelona a vibrant Mediterranean favorite.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1200&q=80" alt="Venice Italy">
+          <div class="card-content">
+            <span class="card-tag">Romantic Canals</span>
+            <h3>Venice</h3>
+            <p>Canal rides, charming bridges, and old-world beauty make Venice one of the most romantic cities in Europe.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1200&q=80" alt="Istanbul Turkey">
+          <div class="card-content">
+            <span class="card-tag">East Meets West</span>
+            <h3>Istanbul</h3>
+            <p>Grand mosques, buzzing bazaars, and Bosphorus views make Istanbul rich with culture and atmosphere.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=1200&q=80" alt="Phuket Thailand">
+          <div class="card-content">
+            <span class="card-tag">Beach Adventure</span>
+            <h3>Phuket</h3>
+            <p>Tropical beaches, island hopping, and lively nightlife make Phuket a fun and colorful holiday destination.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=1200&q=80" alt="London England">
+          <div class="card-content">
+            <span class="card-tag">Classic Capital</span>
+            <h3>London</h3>
+            <p>Royal landmarks, historic neighborhoods, and modern city life give London a bold global character.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1200&q=80" alt="Cape Town South Africa">
+          <div class="card-content">
+            <span class="card-tag">Scenic Escape</span>
+            <h3>Cape Town</h3>
+            <p>Mountain views, ocean drives, and vibrant neighborhoods make Cape Town one of Africa's most beautiful cities.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80" alt="Amsterdam Netherlands">
+          <div class="card-content">
+            <span class="card-tag">Canal Charm</span>
+            <h3>Amsterdam</h3>
+            <p>Scenic canals, artistic heritage, and cozy streets make Amsterdam a relaxed and beautiful European escape.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=1200&q=80" alt="Prague Czech Republic">
+          <div class="card-content">
+            <span class="card-tag">Fairy Tale City</span>
+            <h3>Prague</h3>
+            <p>Castle views, old bridges, and timeless architecture give Prague a magical old-world atmosphere.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=1200&q=80" alt="Marrakech Morocco">
+          <div class="card-content">
+            <span class="card-tag">Colorful Culture</span>
+            <h3>Marrakech</h3>
+            <p>Busy souks, rich colors, and stunning palaces make Marrakech an unforgettable cultural adventure.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1200&q=80" alt="Vienna Austria">
+          <div class="card-content">
+            <span class="card-tag">Elegant Europe</span>
+            <h3>Vienna</h3>
+            <p>Grand palaces, classical music, and charming cafes make Vienna a refined and elegant destination.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=1200&q=80" alt="Seoul South Korea">
+          <div class="card-content">
+            <span class="card-tag">Modern Energy</span>
+            <h3>Seoul</h3>
+            <p>Palaces, trendy districts, and incredible food make Seoul a perfect blend of tradition and innovation.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1500835556837-99ac94a94552?auto=format&fit=crop&w=1200&q=80" alt="Hawaii USA">
+          <div class="card-content">
+            <span class="card-tag">Island Paradise</span>
+            <h3>Hawaii</h3>
+            <p>Volcanic landscapes, beach sunsets, and ocean adventures make Hawaii a dream tropical getaway.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80" alt="Jaipur India">
+          <div class="card-content">
+            <span class="card-tag">Royal Heritage</span>
+            <h3>Jaipur</h3>
+            <p>Palaces, colorful markets, and rich Rajasthani heritage give Jaipur a bold and memorable charm.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1200&q=80" alt="Lisbon Portugal">
+          <div class="card-content">
+            <span class="card-tag">Sunny Coast</span>
+            <h3>Lisbon</h3>
+            <p>Colorful trams, hilltop views, and seaside warmth make Lisbon a lively and welcoming city break.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1200&q=80" alt="Oslo Norway">
+          <div class="card-content">
+            <span class="card-tag">Nordic Escape</span>
+            <h3>Oslo</h3>
+            <p>Fjord beauty, modern design, and calm Scandinavian charm make Oslo a peaceful city adventure.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1504214208698-ea1916a2195a?auto=format&fit=crop&w=1200&q=80" alt="Rio de Janeiro Brazil">
+          <div class="card-content">
+            <span class="card-tag">Vibrant Coast</span>
+            <h3>Rio de Janeiro</h3>
+            <p>Iconic beaches, dramatic mountains, and lively culture make Rio one of the world's most exciting cities.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80" alt="Hong Kong">
+          <div class="card-content">
+            <span class="card-tag">Skyline Wonder</span>
+            <h3>Hong Kong</h3>
+            <p>Skyline views, harbor lights, and incredible city energy make Hong Kong a thrilling urban destination.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80" alt="Santorini Cliffs">
+          <div class="card-content">
+            <span class="card-tag">Cliffside Views</span>
+            <h3>Santorini Cliffs</h3>
+            <p>White cliffside villages and endless sea views make this part of Santorini especially breathtaking.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1513415564515-763d91423bdd?auto=format&fit=crop&w=1200&q=80" alt="Munich Germany">
+          <div class="card-content">
+            <span class="card-tag">Classic Bavaria</span>
+            <h3>Munich</h3>
+            <p>Historic squares, alpine charm, and rich German culture make Munich a standout European destination.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+
+        <article class="destination-card">
+          <img class="card-image" src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80" alt="California Coast">
+          <div class="card-content">
+            <span class="card-tag">Road Trip Coast</span>
+            <h3>California Coast</h3>
+            <p>Ocean cliffs, scenic drives, and beach towns make the California Coast ideal for a stylish escape.</p>
+            <a href="packages.html" class="card-link">View Package</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2025 AeroQuest Travels. All rights reserved.</p>
+      <p>Explore more with AeroQuest destination packages.</p>
+    </footer>
+  </div>
+  <script>
+    const savedEmail = localStorage.getItem("aeroquestUserEmail");
+    const userInitial = document.querySelector(".user-initial");
+
+    if (savedEmail && userInitial) {
+      userInitial.textContent = savedEmail.trim().charAt(0);
+      userInitial.title = savedEmail;
+      userInitial.classList.add("show");
+    }
+
+    const userMenuButton = document.querySelector(".user-initial");
+    const userDropdown = document.querySelector(".user-dropdown");
+    const settingsButton = document.querySelector(".settings-btn");
+    const settingsPanel = document.querySelector(".settings-panel");
+    const settingsOverlay = document.querySelector(".settings-overlay");
+    const closeSettingsButton = document.querySelector(".close-settings");
+    const settingsUserName = document.querySelector(".settings-user-name");
+    const settingsUserEmail = document.querySelector(".settings-user-email");
+    const settingSwitches = document.querySelectorAll(".setting-switch");
+    const logoutButton = document.querySelector(".logout-btn");
+
+    function openSettings() {
+      settingsPanel.classList.add("show");
+      settingsOverlay.classList.add("show");
+      userDropdown.classList.remove("show");
+    }
+
+    function closeSettings() {
+      settingsPanel.classList.remove("show");
+      settingsOverlay.classList.remove("show");
+    }
+
+    if (savedEmail && settingsUserName && settingsUserEmail) {
+      settingsUserName.textContent = localStorage.getItem("aeroquestUserName") || savedEmail.split("@")[0];
+      settingsUserEmail.textContent = savedEmail;
+    }
+
+    if (userMenuButton && userDropdown) {
+      userMenuButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        userDropdown.classList.toggle("show");
+      });
+
+      document.addEventListener("click", () => {
+        userDropdown.classList.remove("show");
+      });
+    }
+
+    if (logoutButton) {
+      logoutButton.addEventListener("click", () => {
+        localStorage.removeItem("aeroquestUserEmail");
+        localStorage.removeItem("aeroquestUserName");
+        window.location.href = "login.html";
+      });
+    }
+
+    if (settingsButton) {
+      settingsButton.addEventListener("click", openSettings);
+    }
+
+    if (closeSettingsButton) {
+      closeSettingsButton.addEventListener("click", closeSettings);
+    }
+
+    if (settingsOverlay) {
+      settingsOverlay.addEventListener("click", closeSettings);
+    }
+
+    settingSwitches.forEach((button) => {
+      button.addEventListener("click", () => {
+        button.classList.toggle("active");
+      });
+    });
+  </script>
+</body>
+</html>

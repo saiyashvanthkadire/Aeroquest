@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroQuest Contact</title>
+  <style>
+    :root {
+      --navy: #071b2f;
+      --blue: #0d6efd;
+      --gold: #ffd166;
+      --mist: #eaf4ff;
+      --text: #f7fbff;
+      --card: rgba(7, 27, 47, 0.72);
+      --border: rgba(255, 255, 255, 0.18);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        linear-gradient(125deg, rgba(3, 16, 30, 0.82), rgba(9, 49, 92, 0.55)),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat fixed;
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(3px);
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 54px;
+      background: rgba(9, 23, 41, 0.28);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+      color: #fff;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-tag {
+      font-size: 14px;
+      color: #dceeff;
+      letter-spacing: 0.8px;
+    }
+
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .logo-text strong {
+      font-size: 28px;
+      color: #ffffff;
+      letter-spacing: 0.4px;
+    }
+
+    .logo-text span {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      margin-top: 4px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--gold);
+    }
+
+    .user-initial {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 50%;
+      place-items: center;
+      background: linear-gradient(135deg, var(--gold), #ff9f1c);
+      color: #10233b;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+    }
+
+    .user-initial.show {
+      display: grid;
+    }
+
+    .user-menu {
+      position: relative;
+    }
+
+    .user-dropdown {
+      position: absolute;
+      top: 48px;
+      right: 0;
+      display: none;
+      min-width: 150px;
+      padding: 8px;
+      border-radius: 14px;
+      background: rgba(8, 27, 51, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+    }
+
+    .user-dropdown.show {
+      display: grid;
+      gap: 4px;
+    }
+
+    .user-dropdown button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    .user-dropdown button:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--gold);
+    }
+
+    .settings-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      background: rgba(0, 0, 0, 0.34);
+      z-index: 30;
+    }
+
+    .settings-overlay.show {
+      display: block;
+    }
+
+    .settings-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: min(340px, 88vw);
+      height: 100vh;
+      padding: 28px;
+      overflow-y: auto;
+      transform: translateX(105%);
+      transition: transform 0.28s ease;
+      z-index: 31;
+      background: #081b33;
+      color: #fff;
+      box-shadow: -18px 0 44px rgba(0, 0, 0, 0.3);
+    }
+
+    .settings-panel.show {
+      transform: translateX(0);
+    }
+
+    .settings-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .settings-head h2 {
+      font-size: 26px;
+    }
+
+    .close-settings {
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .profile-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      margin-bottom: 24px;
+    }
+
+    .profile-card span {
+      display: block;
+      color: var(--gold);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .profile-card strong {
+      display: block;
+      font-size: 20px;
+      word-break: break-word;
+    }
+
+    .profile-card small {
+      display: block;
+      margin-top: 6px;
+      color: #cfe0f1;
+      word-break: break-word;
+    }
+
+    .settings-section {
+      margin-top: 22px;
+    }
+
+    .settings-section h3 {
+      margin-bottom: 12px;
+      font-size: 16px;
+      color: #ffd166;
+    }
+
+    .settings-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .settings-row span {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .settings-row small {
+      display: block;
+      margin-top: 3px;
+      color: #cfe0f1;
+      font-size: 12px;
+    }
+
+    .setting-switch {
+      width: 48px;
+      height: 26px;
+      border: none;
+      border-radius: 999px;
+      padding: 3px;
+      background: rgba(255, 255, 255, 0.22);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .setting-switch::before {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ffffff;
+      transition: transform 0.2s ease;
+    }
+
+    .setting-switch.active {
+      background: linear-gradient(135deg, #ffd166, #ff9f1c);
+    }
+
+    .setting-switch.active::before {
+      transform: translateX(22px);
+      background: #10233b;
+    }
+
+    .quick-actions {
+      display: grid;
+      gap: 10px;
+    }
+
+    .settings-link {
+      display: block;
+      padding: 13px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .settings-link:hover {
+      color: #10233b;
+      background: linear-gradient(135deg, #ffd166, #ff9f1c);
+    }
+
+
+    .contact-section {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 32px;
+      align-items: center;
+      padding: 48px 60px 60px;
+    }
+
+    .contact-copy {
+      max-width: 560px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      letter-spacing: 1px;
+      font-size: 12px;
+      margin-bottom: 18px;
+    }
+
+    .contact-copy h1 {
+      font-size: 58px;
+      line-height: 1.05;
+      margin-bottom: 18px;
+    }
+
+    .contact-copy p {
+      font-size: 18px;
+      line-height: 1.7;
+      color: #e3f0ff;
+      margin-bottom: 28px;
+    }
+
+    .highlights {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .highlight-card {
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.11);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 20px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+    }
+
+    .highlight-card h3 {
+      color: var(--gold);
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .highlight-card p {
+      font-size: 14px;
+      margin: 0;
+      color: #eff7ff;
+    }
+
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 34px 30px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.32);
+      backdrop-filter: blur(18px);
+    }
+
+    .contact-card h2 {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .contact-card .intro {
+      color: #d7e8fa;
+      margin-bottom: 22px;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .contact-form label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin: 16px 0 8px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--gold);
+      background: rgba(255, 255, 255, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .contact-form textarea {
+      resize: none;
+      min-height: 130px;
+    }
+
+    .contact-form button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 15px;
+      border: none;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--gold), #ff9f1c);
+      color: #10233b;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .contact-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(255, 184, 28, 0.28);
+    }
+
+    .contact-details {
+      display: grid;
+      gap: 12px;
+      margin-top: 22px;
+      color: #eaf4ff;
+      font-size: 14px;
+    }
+
+    .contact-details strong {
+      color: var(--gold);
+    }
+
+    @media (max-width: 960px) {
+      .contact-section {
+        grid-template-columns: 1fr;
+        padding: 30px 20px 40px;
+      }
+
+      .contact-copy h1 {
+        font-size: 42px;
+      }
+
+      .header {
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      nav {
+        justify-content: center;
+        gap: 10px 14px;
+      }
+
+      nav a {
+        margin-left: 0;
+      }
+
+      .highlights {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="header">
+      <div class="brand-group">
+        <div class="logo-mark" aria-label="AeroQuest Travels logo">
+          <svg class="logo-icon" viewBox="0 0 64 64" aria-hidden="true">
+            <defs>
+              <linearGradient id="aqContactLogo" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4cc9f0"></stop>
+                <stop offset="100%" stop-color="#0d6efd"></stop>
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="30" fill="url(#aqContactLogo)"></circle>
+            <path d="M32 14c-7.5 0-13.5 5.8-13.5 13.1 0 10.1 13.5 22.9 13.5 22.9S45.5 37.2 45.5 27.1C45.5 19.8 39.5 14 32 14zm0 17.6a4.8 4.8 0 1 1 0-9.6 4.8 4.8 0 0 1 0 9.6z" fill="#ffffff"></path>
+            <path d="M17 25l15.5 4.1 8.6-7.5c1.3-1.1 3.2.5 2.2 1.9l-6.5 8.9 3.7 13.6c.3 1.2-1.2 2-2 1.1l-7.1-8.1-8.8 2.1c-1.2.3-2-.9-1.2-1.8l5.4-6.3-9.2-5.5c-1.1-.7-.7-2.5.6-2.4z" fill="#ffd166"></path>
+          </svg>
+          <div class="logo-text">
+            <strong>AeroQuest</strong>
+            <span>Travels</span>
+          </div>
+        </div>
+        <div class="brand-tag">Explore beyond the limits</div>
+      </div>
+      <nav>
+        <a href="homepage.html">Home</a>
+        <a href="destination.html">Destinations</a>
+        <a href="packages.html">Packages</a>
+        <a href="Bookingform.html">Booking</a>
+        <a href="contact.html" class="active">Contact</a>
+        <div class="user-menu">
+          <button class="user-initial" type="button" aria-label="Open account menu"></button>
+          <div class="user-dropdown">
+            <button type="button" class="settings-btn">Settings</button>
+            <button type="button" class="logout-btn">Logout</button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="settings-overlay"></div>
+    <aside class="settings-panel" aria-label="Account settings">
+      <div class="settings-head">
+        <h2>Settings</h2>
+        <button class="close-settings" type="button" aria-label="Close settings">x</button>
+      </div>
+      <div class="profile-card">
+        <span>User</span>
+        <strong class="settings-user-name">Guest User</strong>
+        <small class="settings-user-email">Not signed in</small>
+      </div>
+      <div class="settings-section">
+        <h3>Travel Profile</h3>
+        <div class="settings-row">
+          <div>
+            <span>Member access</span>
+            <small>Bookings and saved plans stay connected</small>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div>
+            <span>Preferred package</span>
+            <small>Standard comfort</small>
+          </div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h3>Notifications</h3>
+        <div class="settings-row">
+          <div>
+            <span>Trip reminders</span>
+            <small>Booking dates and travel updates</small>
+          </div>
+          <button class="setting-switch active" type="button" aria-label="Toggle trip reminders"></button>
+        </div>
+        <div class="settings-row">
+          <div>
+            <span>Offer alerts</span>
+            <small>Package deals and seasonal escapes</small>
+          </div>
+          <button class="setting-switch" type="button" aria-label="Toggle offer alerts"></button>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h3>Quick Actions</h3>
+        <div class="quick-actions">
+          <a class="settings-link" href="Bookingform.html">Open Booking Form</a>
+          <a class="settings-link" href="contact.html">Contact Support</a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="contact-section">
+      <section class="contact-copy">
+        <span class="eyebrow">PLAN YOUR NEXT ESCAPE</span>
+        <h1>Let your next journey start with one message.</h1>
+        <p>
+          Reach out to AeroQuest Travels for custom itineraries, holiday packages, and smooth travel support.
+          We design trips that feel exciting before you even pack your bags.
+        </p>
+
+        <div class="highlights">
+          <article class="highlight-card">
+            <h3>Tailored Trips</h3>
+            <p>Personalized suggestions for family vacations, solo adventures, and romantic getaways.</p>
+          </article>
+          <article class="highlight-card">
+            <h3>Quick Response</h3>
+            <p>Share your idea and our team will help shape it into a realistic and memorable travel plan.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact-card">
+        <h2>Contact Us</h2>
+        <p class="intro">Tell us where you want to go, what you love, and when you want to travel.</p>
+
+        <form class="contact-form">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="name@example.com" required>
+
+          <label for="message">Your Travel Plan</label>
+          <textarea id="message" name="message" placeholder="I want a 5-day beach trip with flight and hotel details..." required></textarea>
+
+          <button type="submit">Send Message</button>
+        </form>
+
+        <div class="contact-details">
+          <div><strong>Email:</strong> kadiresaiyashwanth@gmail.com</div>
+          <div><strong>Availability:</strong> Monday to Saturday, 9:00 AM - 8:00 PM</div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script>
+    const savedEmail = localStorage.getItem("aeroquestUserEmail");
+    const userInitial = document.querySelector(".user-initial");
+
+    if (savedEmail && userInitial) {
+      userInitial.textContent = savedEmail.trim().charAt(0);
+      userInitial.title = savedEmail;
+      userInitial.classList.add("show");
+    }
+
+    const userMenuButton = document.querySelector(".user-initial");
+    const userDropdown = document.querySelector(".user-dropdown");
+    const settingsButton = document.querySelector(".settings-btn");
+    const settingsPanel = document.querySelector(".settings-panel");
+    const settingsOverlay = document.querySelector(".settings-overlay");
+    const closeSettingsButton = document.querySelector(".close-settings");
+    const settingsUserName = document.querySelector(".settings-user-name");
+    const settingsUserEmail = document.querySelector(".settings-user-email");
+    const settingSwitches = document.querySelectorAll(".setting-switch");
+    const logoutButton = document.querySelector(".logout-btn");
+
+    function openSettings() {
+      settingsPanel.classList.add("show");
+      settingsOverlay.classList.add("show");
+      userDropdown.classList.remove("show");
+    }
+
+    function closeSettings() {
+      settingsPanel.classList.remove("show");
+      settingsOverlay.classList.remove("show");
+    }
+
+    if (savedEmail && settingsUserName && settingsUserEmail) {
+      settingsUserName.textContent = localStorage.getItem("aeroquestUserName") || savedEmail.split("@")[0];
+      settingsUserEmail.textContent = savedEmail;
+    }
+
+    if (userMenuButton && userDropdown) {
+      userMenuButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        userDropdown.classList.toggle("show");
+      });
+
+      document.addEventListener("click", () => {
+        userDropdown.classList.remove("show");
+      });
+    }
+
+    if (logoutButton) {
+      logoutButton.addEventListener("click", () => {
+        localStorage.removeItem("aeroquestUserEmail");
+        localStorage.removeItem("aeroquestUserName");
+        window.location.href = "login.html";
+      });
+    }
+
+    if (settingsButton) {
+      settingsButton.addEventListener("click", openSettings);
+    }
+
+    if (closeSettingsButton) {
+      closeSettingsButton.addEventListener("click", closeSettings);
+    }
+
+    if (settingsOverlay) {
+      settingsOverlay.addEventListener("click", closeSettings);
+    }
+
+    settingSwitches.forEach((button) => {
+      button.addEventListener("click", () => {
+        button.classList.toggle("active");
+      });
+    });
+  </script>
+</body>
+</html>
