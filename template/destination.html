@@ -409,6 +409,7 @@
       box-shadow: 0 22px 48px rgba(16, 35, 59, 0.1);
       transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
       animation: fadeUp 0.8s ease both;
+      cursor: pointer;
     }
 
     .destination-card:nth-child(2),
@@ -494,6 +495,180 @@
       box-shadow: 0 14px 28px rgba(255, 170, 37, 0.22);
     }
 
+    .destination-detail {
+      display: none;
+      padding: 0 54px 76px;
+    }
+
+    .destination-detail.show {
+      display: block;
+      animation: fadeUp 0.45s ease both;
+    }
+
+    .detail-panel {
+      overflow: hidden;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.93);
+      border: 1px solid rgba(209, 225, 242, 0.95);
+      box-shadow: 0 28px 65px rgba(16, 35, 59, 0.16);
+    }
+
+    .detail-hero {
+      min-height: 340px;
+      display: flex;
+      align-items: flex-end;
+      padding: 34px;
+      color: #fff;
+      background-position: center;
+      background-size: cover;
+      position: relative;
+    }
+
+    .detail-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(8, 27, 51, 0.08), rgba(8, 27, 51, 0.78));
+    }
+
+    .detail-hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 780px;
+    }
+
+    .detail-hero h2 {
+      font-size: 46px;
+      line-height: 1.05;
+      margin-bottom: 12px;
+    }
+
+    .detail-rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      font-weight: bold;
+    }
+
+    .detail-body {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 26px;
+      padding: 30px;
+    }
+
+    .detail-copy h3,
+    .detail-side h3 {
+      font-size: 24px;
+      color: #10233b;
+      margin-bottom: 12px;
+    }
+
+    .detail-copy p {
+      color: #4e6278;
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .detail-stat,
+    .tip-card,
+    .reference-card {
+      padding: 16px;
+      border-radius: 18px;
+      background: #f5f9fe;
+      border: 1px solid #dfebf7;
+    }
+
+    .detail-stat span,
+    .tip-card span {
+      display: block;
+      margin-bottom: 7px;
+      color: #0d6efd;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .detail-stat strong,
+    .tip-card strong {
+      display: block;
+      color: #10233b;
+      font-size: 18px;
+    }
+
+    .highlight-list,
+    .reference-list {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .highlight-list li {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: #fff7e8;
+      border: 1px solid #f1e0ba;
+      color: #32465d;
+    }
+
+    .detail-side {
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .reference-list a {
+      color: #0d6efd;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .reference-list a:hover {
+      text-decoration: underline;
+    }
+
+    .detail-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .detail-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 18px;
+      border-radius: 999px;
+      border: none;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .detail-btn.primary {
+      background: linear-gradient(135deg, var(--gold), #ff9f1c);
+      color: #10233b;
+    }
+
+    .detail-btn.secondary {
+      background: #eaf4ff;
+      color: #0d6efd;
+    }
+
     footer {
       background: #081b33;
       color: #dceeff;
@@ -534,17 +709,21 @@
 
       .hero,
       .destinations,
+      .destination-detail,
       footer {
         padding-left: 20px;
         padding-right: 20px;
       }
 
       .hero h1,
-      .section-title h2 {
+      .section-title h2,
+      .detail-hero h2 {
         font-size: 36px;
       }
 
-      .destination-grid {
+      .destination-grid,
+      .detail-body,
+      .detail-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -1071,12 +1250,275 @@
       </div>
     </section>
 
+    <section class="destination-detail" id="destination-detail" aria-live="polite">
+      <div class="detail-panel">
+        <div class="detail-hero" id="detail-hero">
+          <div class="detail-hero-content">
+            <span class="eyebrow" id="detail-category">TRAVEL GUIDE</span>
+            <h2 id="detail-title">Select a destination</h2>
+            <div class="detail-rating" id="detail-rating">Rating: 4.8/5</div>
+          </div>
+        </div>
+
+        <div class="detail-body">
+          <div class="detail-copy">
+            <h3>About this destination</h3>
+            <p id="detail-about"></p>
+
+            <div class="detail-grid">
+              <div class="detail-stat">
+                <span>Best Time</span>
+                <strong id="detail-best-time"></strong>
+              </div>
+              <div class="detail-stat">
+                <span>Ideal Trip</span>
+                <strong id="detail-duration"></strong>
+              </div>
+              <div class="detail-stat">
+                <span>Budget Style</span>
+                <strong id="detail-budget"></strong>
+              </div>
+              <div class="detail-stat">
+                <span>Travel Mood</span>
+                <strong id="detail-mood"></strong>
+              </div>
+            </div>
+
+            <h3>Top experiences</h3>
+            <ul class="highlight-list" id="detail-highlights"></ul>
+
+            <div class="detail-actions">
+              <a class="detail-btn primary" href="packages.html" id="detail-packages-link">View Packages</a>
+              <button class="detail-btn secondary" type="button" id="detail-close">Back to all destinations</button>
+            </div>
+          </div>
+
+          <aside class="detail-side">
+            <div class="tip-card">
+              <span>Local Travel Tip</span>
+              <strong id="detail-tip"></strong>
+            </div>
+            <div class="tip-card">
+              <span>Getting Around</span>
+              <strong id="detail-transport"></strong>
+            </div>
+            <div class="reference-card">
+              <h3>Travel references</h3>
+              <ul class="reference-list" id="detail-references"></ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
     <footer>
       <p>&copy; 2025 AeroQuest Travels. All rights reserved.</p>
       <p>Explore more with AeroQuest destination packages.</p>
     </footer>
   </div>
   <script>
+    const destinationGuides = {
+      "Paris": {
+        rating: "4.9/5",
+        bestTime: "April to June and September to October",
+        duration: "4 to 5 days",
+        budget: "Premium city break",
+        mood: "Romance, museums, food, fashion",
+        about: "Paris is a classic European city escape known for the Eiffel Tower, the Louvre, elegant neighborhoods, river walks, and cafe culture. It is best for travelers who enjoy art, architecture, shopping, fine dining, and slow evenings around historic streets.",
+        highlights: ["Watch the Eiffel Tower sparkle after sunset", "Visit the Louvre, Musee d'Orsay, and Sainte-Chapelle", "Walk Montmartre, Le Marais, and the Seine riverbanks", "Try a pastry breakfast, bistro lunch, and evening cruise"],
+        tip: "Book major museum and tower tickets ahead of time, then keep one evening free for wandering without a strict plan.",
+        transport: "Use the Metro for most sightseeing and walk between nearby neighborhoods.",
+        references: [["Paris je t'aime official guide", "https://parisjetaime.com/eng/"], ["Lonely Planet Paris", "https://www.lonelyplanet.com/france/paris"]]
+      },
+      "Singapore": {
+        rating: "4.8/5",
+        bestTime: "February to April for slightly drier city exploring",
+        duration: "3 to 4 days",
+        budget: "Comfort to premium",
+        mood: "Modern skyline, gardens, food, shopping",
+        about: "Singapore blends futuristic attractions with heritage districts, clean public spaces, famous hawker food, waterfront views, and tropical gardens. It works very well for first-time international travelers because transport is efficient and the city is easy to navigate.",
+        highlights: ["See Gardens by the Bay and Marina Bay at night", "Eat at hawker centers in Chinatown, Maxwell, and Lau Pa Sat", "Explore Little India, Kampong Glam, and the Singapore River", "Add Sentosa or the Singapore Zoo for families"],
+        tip: "Carry a light umbrella and plan indoor attractions around afternoon heat or rain.",
+        transport: "The MRT is fast, affordable, and connects most major neighborhoods.",
+        references: [["Visit Singapore official guide", "https://www.visitsingapore.com/"], ["Rough Guides Singapore weather", "https://www.roughguides.com/singapore/when-to-go/"]]
+      },
+      "New York": {
+        rating: "4.8/5",
+        bestTime: "April to June and September to early November",
+        duration: "4 to 6 days",
+        budget: "Premium urban adventure",
+        mood: "Landmarks, Broadway, food, nightlife",
+        about: "New York is an energetic city trip built around iconic landmarks, museums, parks, theater, shopping, and world food. It suits travelers who want a packed itinerary with different neighborhoods and a strong big-city atmosphere.",
+        highlights: ["Walk Central Park and the High Line", "See Times Square, Broadway, and the Empire State Building", "Visit the Statue of Liberty, MoMA, or the Met", "Try food stops across Brooklyn, Queens, and Lower Manhattan"],
+        tip: "Group sights by neighborhood so you spend less time crossing the city.",
+        transport: "Subway and walking are the most practical ways to move around Manhattan and nearby boroughs.",
+        references: [["New York official guide", "https://www.nyctourism.com/"], ["Lonely Planet New York City", "https://www.lonelyplanet.com/usa/new-york-city"]]
+      },
+      "Switzerland": {
+        rating: "4.9/5",
+        bestTime: "June to September for hiking, December to March for snow",
+        duration: "6 to 8 days",
+        budget: "Luxury mountain escape",
+        mood: "Alps, lakes, trains, scenic towns",
+        about: "Switzerland is famous for alpine landscapes, clear lakes, compact cities, reliable trains, and polished mountain resorts. It is ideal for travelers who want scenic routes, clean towns, outdoor activities, and high-comfort stays.",
+        highlights: ["Ride scenic trains such as the Glacier Express or Bernina routes", "Visit Lucerne, Interlaken, Zurich, and Zermatt", "Plan lake cruises, cable cars, and mountain viewpoints", "Try Swiss chocolate, fondue, and village walks"],
+        tip: "Pack layers even in summer because mountain weather changes quickly.",
+        transport: "Swiss trains, boats, buses, and cable cars connect most major routes smoothly.",
+        references: [["MySwitzerland official guide", "https://www.myswitzerland.com/en/"], ["Switzerland Travel Centre best times", "https://switzerlandtravelcentre.com/en-us/travel-information/switzerland/best-travel-times"]]
+      },
+      "Dubai": {
+        rating: "4.7/5",
+        bestTime: "November to March",
+        duration: "4 to 5 days",
+        budget: "Premium city and desert trip",
+        mood: "Luxury, shopping, skyline, desert",
+        about: "Dubai is known for bold architecture, luxury hotels, beaches, desert experiences, shopping malls, and family attractions. It is a strong choice for travelers who want comfort, warm weather, and polished entertainment.",
+        highlights: ["Visit Burj Khalifa, Dubai Mall, and Dubai Fountain", "Take a desert safari with dinner and sunset views", "Explore Al Fahidi, spice souks, and Dubai Creek", "Add beaches, theme parks, or a marina cruise"],
+        tip: "Reserve desert safaris and Burj Khalifa slots early during winter peak season.",
+        transport: "Use taxis, ride apps, and the Metro for major city routes.",
+        references: [["Visit Dubai official guide", "https://www.visitdubai.com/en/"], ["Lonely Planet Dubai", "https://www.lonelyplanet.com/united-arab-emirates/dubai"]]
+      },
+      "Bali": {
+        rating: "4.8/5",
+        bestTime: "April to October",
+        duration: "5 to 7 days",
+        budget: "Flexible tropical escape",
+        mood: "Beaches, temples, wellness, culture",
+        about: "Bali mixes beach life, green rice terraces, Hindu temples, surf towns, waterfalls, wellness stays, and creative cafes. It is excellent for couples, friends, and relaxed travelers who want both nature and culture.",
+        highlights: ["Watch sunset at Uluwatu or Tanah Lot", "Explore Ubud, rice terraces, waterfalls, and temples", "Plan beach time in Seminyak, Canggu, Nusa Dua, or Uluwatu", "Try local food, spa treatments, and a day trip to nearby islands"],
+        tip: "Stay in two areas if possible, such as Ubud plus a beach base, to reduce daily road time.",
+        transport: "Private drivers are easiest for day trips; scooters suit experienced riders only.",
+        references: [["Indonesia Travel Bali guide", "https://www.indonesia.travel/gb/en/destinations/bali-nusa-tenggara/bali"], ["Lonely Planet Bali", "https://www.lonelyplanet.com/indonesia/bali"]]
+      },
+      "Iceland": {
+        rating: "4.9/5",
+        bestTime: "June to August for road trips, September to March for northern lights",
+        duration: "5 to 8 days",
+        budget: "High-budget nature adventure",
+        mood: "Waterfalls, glaciers, hot springs, road trips",
+        about: "Iceland delivers dramatic natural scenery with waterfalls, black-sand beaches, glaciers, geothermal lagoons, volcano landscapes, and wide open roads. It is best for nature lovers, photographers, and travelers who enjoy changing weather and big landscapes.",
+        highlights: ["Drive the Golden Circle and South Coast", "Visit waterfalls, black beaches, glaciers, and lava fields", "Relax in geothermal lagoons", "Chase northern lights in darker months"],
+        tip: "Check road and weather updates daily before long drives.",
+        transport: "Renting a car is the most flexible option outside Reykjavik.",
+        references: [["Visit Iceland official guide", "https://www.visiticeland.com/"], ["Lonely Planet Iceland", "https://www.lonelyplanet.com/iceland"]]
+      },
+      "London": {
+        rating: "4.8/5",
+        bestTime: "May to September",
+        duration: "4 to 6 days",
+        budget: "Premium classic capital trip",
+        mood: "History, museums, theatre, markets",
+        about: "London combines royal landmarks, free museums, historic streets, parks, shopping, markets, and West End theatre. It fits travelers who like layered history, easy public transport, and plenty of day-trip options.",
+        highlights: ["See Westminster, Buckingham Palace, Tower Bridge, and the Tower of London", "Visit the British Museum, National Gallery, or Tate Modern", "Explore Camden, Borough Market, Soho, and Notting Hill", "Watch a West End show"],
+        tip: "Use contactless payment or an Oyster card for quick Tube and bus travel.",
+        transport: "The Tube, buses, and walking cover most visitor routes well.",
+        references: [["Visit London official guide", "https://www.visitlondon.com/"], ["Lonely Planet London", "https://www.lonelyplanet.com/england/london"]]
+      }
+    };
+
+    const defaultGuide = {
+      rating: "4.7/5",
+      bestTime: "Shoulder season months for fewer crowds and better value",
+      duration: "3 to 5 days",
+      budget: "Comfort package",
+      mood: "Sightseeing, local food, scenic stays",
+      tip: "Book the main attraction first, then keep time open for local neighborhoods and viewpoints.",
+      transport: "Use trusted public transport in cities and pre-book transfers for remote attractions."
+    };
+
+    const detailSection = document.getElementById("destination-detail");
+    const detailHero = document.getElementById("detail-hero");
+    const detailCategory = document.getElementById("detail-category");
+    const detailTitle = document.getElementById("detail-title");
+    const detailRating = document.getElementById("detail-rating");
+    const detailAbout = document.getElementById("detail-about");
+    const detailBestTime = document.getElementById("detail-best-time");
+    const detailDuration = document.getElementById("detail-duration");
+    const detailBudget = document.getElementById("detail-budget");
+    const detailMood = document.getElementById("detail-mood");
+    const detailHighlights = document.getElementById("detail-highlights");
+    const detailTip = document.getElementById("detail-tip");
+    const detailTransport = document.getElementById("detail-transport");
+    const detailReferences = document.getElementById("detail-references");
+    const detailPackagesLink = document.getElementById("detail-packages-link");
+    const detailClose = document.getElementById("detail-close");
+
+    function buildFallbackGuide(name, category, summary) {
+      return {
+        ...defaultGuide,
+        mood: category,
+        about: `${name} is a strong choice for travelers interested in ${summary.charAt(0).toLowerCase() + summary.slice(1)} AeroQuest recommends balancing landmark visits with slower local moments so the trip feels memorable instead of rushed.`,
+        highlights: [
+          `Explore the signature sights that make ${name} famous`,
+          "Try a local food experience or guided neighborhood walk",
+          "Plan one scenic sunrise, sunset, or viewpoint stop",
+          "Leave buffer time for shopping, cafes, markets, or relaxed photos"
+        ],
+        references: [
+          ["Lonely Planet destination search", `https://www.lonelyplanet.com/search?q=${encodeURIComponent(name)}`],
+          ["Tripadvisor traveler reviews", `https://www.tripadvisor.com/Search?q=${encodeURIComponent(name)}`]
+        ]
+      };
+    }
+
+    function openDestinationDetail(card) {
+      const name = card.querySelector("h3").textContent.trim();
+      const category = card.querySelector(".card-tag").textContent.trim();
+      const summary = card.querySelector("p").textContent.trim();
+      const image = card.querySelector(".card-image").src;
+      const guide = destinationGuides[name] || buildFallbackGuide(name, category, summary);
+
+      detailHero.style.backgroundImage = `linear-gradient(180deg, rgba(8, 27, 51, 0.08), rgba(8, 27, 51, 0.78)), url("${image}")`;
+      detailCategory.textContent = category.toUpperCase();
+      detailTitle.textContent = name;
+      detailRating.textContent = `Traveler rating: ${guide.rating}`;
+      detailAbout.textContent = guide.about;
+      detailBestTime.textContent = guide.bestTime;
+      detailDuration.textContent = guide.duration;
+      detailBudget.textContent = guide.budget;
+      detailMood.textContent = guide.mood;
+      detailTip.textContent = guide.tip;
+      detailTransport.textContent = guide.transport;
+      detailPackagesLink.href = `packages.html?destination=${encodeURIComponent(name)}`;
+
+      detailHighlights.innerHTML = guide.highlights.map((item) => `<li>${item}</li>`).join("");
+      detailReferences.innerHTML = guide.references.map(([label, url]) => `<li><a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a></li>`).join("");
+
+      detailSection.classList.add("show");
+      detailSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    document.querySelectorAll(".destination-card").forEach((card) => {
+      const link = card.querySelector(".card-link");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("role", "button");
+      card.setAttribute("aria-label", `Open details for ${card.querySelector("h3").textContent.trim()}`);
+
+      if (link) {
+        link.textContent = "Explore Details";
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          openDestinationDetail(card);
+        });
+      }
+
+      card.addEventListener("click", () => openDestinationDetail(card));
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openDestinationDetail(card);
+        }
+      });
+    });
+
+    if (detailClose) {
+      detailClose.addEventListener("click", () => {
+        detailSection.classList.remove("show");
+        document.querySelector(".destinations").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+
     const savedEmail = localStorage.getItem("aeroquestUserEmail");
     const userInitial = document.querySelector(".user-initial");
 
