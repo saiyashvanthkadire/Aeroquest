@@ -247,6 +247,29 @@
       font-size: 14px;
     }
 
+    .flash-messages {
+      margin-bottom: 18px;
+    }
+
+    .flash {
+      padding: 12px 14px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+    }
+
+    .flash.error {
+      background: rgba(255, 70, 70, 0.24);
+      border-color: rgba(255, 120, 120, 0.55);
+    }
+
+    .flash.success {
+      background: rgba(25, 180, 120, 0.24);
+      border-color: rgba(90, 220, 165, 0.55);
+    }
+
     @media (max-width: 900px) {
       .page {
         grid-template-columns: 1fr;
@@ -307,6 +330,16 @@
     </section>
 
     <section class="card">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
       <div class="auth-tabs" aria-label="Choose login or signup form">
         <button class="tab-btn active" type="button" data-panel="login">Log In</button>
         <button class="tab-btn" type="button" data-panel="signup">Sign Up</button>
@@ -315,15 +348,15 @@
       <div class="auth-panel active" id="login-panel">
         <h2>Welcome back</h2>
         <p>Enter your account details and continue your travel story.</p>
-        <form action="homepage.html" class="auth-form">
+        <form action="{{ url_for('login') }}" method="post" class="auth-form">
           <div class="field">
             <label for="email">Email Address</label>
-            <input type="email" id="email" placeholder="name@example.com" required>
+            <input type="email" id="email" name="email" placeholder="name@example.com" required>
           </div>
 
           <div class="field">
             <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Enter your password" required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
           </div>
 
           <div class="options">
@@ -339,31 +372,31 @@
       <div class="auth-panel" id="signup-panel">
         <h2>Create account</h2>
         <p>Join AeroQuest and start planning smarter, faster, and more beautifully.</p>
-        <form action="homepage.html" class="auth-form">
+        <form action="{{ url_for('signup') }}" method="post" class="auth-form">
           <div class="grid">
             <div class="field">
               <label for="first-name">First Name</label>
-              <input type="text" id="first-name" placeholder="First name" required>
+              <input type="text" id="first-name" name="first_name" placeholder="First name" required>
             </div>
 
             <div class="field">
               <label for="last-name">Last Name</label>
-              <input type="text" id="last-name" placeholder="Last name" required>
+              <input type="text" id="last-name" name="last_name" placeholder="Last name" required>
             </div>
 
             <div class="field full">
               <label for="signup-email">Email Address</label>
-              <input type="email" id="signup-email" placeholder="name@example.com" required>
+              <input type="email" id="signup-email" name="email" placeholder="name@example.com" required>
             </div>
 
             <div class="field">
               <label for="signup-password">Password</label>
-              <input type="password" id="signup-password" placeholder="Create password" required>
+              <input type="password" id="signup-password" name="password" placeholder="Create password" required>
             </div>
 
             <div class="field">
               <label for="confirm-password">Confirm Password</label>
-              <input type="password" id="confirm-password" placeholder="Confirm password" required>
+              <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm password" required>
             </div>
           </div>
 
